@@ -5,20 +5,8 @@ const Features = require('../helper/Features');
 
 
 // Add Banner
-exports.createBanner = catchAsyncErrors(async (req, res, next) => {
+exports.createBanner = catchAsyncErrors(async(req, res, next) => {
     const banner = await Banner.create(req.body);
-    const filter = { _id: ObjectId("6222edde180023541b1343c6") };
-    const options = { upsert: true };
-    const updateDoc = {
-        $set: {
-            banner: banner,
-        },
-    };
-    const result = await categories.updateOne(
-        filter,
-        updateDoc,
-        options
-    );
     res.status(201).json({
         success: true,
         result
@@ -27,13 +15,13 @@ exports.createBanner = catchAsyncErrors(async (req, res, next) => {
 
 
 // Get All Banners
-exports.getAllBanners = catchAsyncErrors(async(req, res, next)=> {
+exports.getAllBanners = catchAsyncErrors(async(req, res, next) => {
     const resultPerPage = 8;
     const bannerCount = await Banner.countDocuments();
     const feature = new Features(Banner.find(), req.query)
-    .search()
-    .filter()
-    .pagination(resultPerPage);
+        .search()
+        .filter()
+        .pagination(resultPerPage);
     const banners = await feature.query;
     res.status(200).json({
         success: true,
@@ -43,9 +31,9 @@ exports.getAllBanners = catchAsyncErrors(async(req, res, next)=> {
 
 
 // Update Banner 
-exports.updateBanner = catchAsyncErrors(async(req, res, next)=> {
+exports.updateBanner = catchAsyncErrors(async(req, res, next) => {
     let banner = await Banner.findById(req.params.id);
-    if(!banner) {
+    if (!banner) {
         return res.status(500).json({
             success: false,
             message: "Banner is not found with this id"
@@ -63,9 +51,9 @@ exports.updateBanner = catchAsyncErrors(async(req, res, next)=> {
 });
 
 // Delete Banner 
-exports.deleteBanner = catchAsyncErrors(async(req, res, next)=> {
+exports.deleteBanner = catchAsyncErrors(async(req, res, next) => {
     const banner = await Banner.findById(req.params.id);
-    if(!banner){
+    if (!banner) {
         return res.status(500).json({
             success: false,
             message: "Banner is not found with this id"
@@ -80,9 +68,9 @@ exports.deleteBanner = catchAsyncErrors(async(req, res, next)=> {
 })
 
 // Single Banner Details
-exports.getSingleBanner = catchAsyncErrors(async(req, res, next)=> {
+exports.getSingleBanner = catchAsyncErrors(async(req, res, next) => {
     const banner = await Banner.findById(req.params.id);
-    if(!banner){
+    if (!banner) {
         return next(new ErrorHandler("Banner is not found with this id", 404));
     }
     res.status(200).json({
